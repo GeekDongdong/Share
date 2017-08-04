@@ -7,9 +7,10 @@
 //
 
 #import "ViewControllerOne.h"
-
-@interface ViewControllerOne ()<UITableViewDelegate,UITableViewDataSource>{
+#import "VC_One_Button.h"
+@interface ViewControllerOne ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     UIScrollView *sv;
+    UIPageControl *PControl;
 }
 
 @end
@@ -18,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -36,7 +38,6 @@
     int n = 10;
     //把图片装上去
     for (int i=1; i<5; i++) {
-        
         NSString *name=[NSString stringWithFormat:@"%d.jpg",++n];
         UIImage *image=[UIImage imageNamed:name];
         UIImageView *imageV=[[UIImageView alloc]initWithFrame:CGRectMake(375*(i-1), 0, 375, 150)];
@@ -46,32 +47,36 @@
     
     //分页显示
     sv.pagingEnabled=YES;
-    
     //是否允许反弹
-    sv.bounces=NO;//左右反弹
+    sv.bounces = NO;
     //sv.automaticallyAdjustsScrollViewInsets=NO;//上下反弹
     //修改滚动条样式
     //白色长条
     //sv.indicatorStyle=UIScrollViewIndicatorStyleWhite;
-    
     //隐藏水平滚动条
     sv.showsHorizontalScrollIndicator=NO;
-    //        sv.showsVerticalScrollIndicator=NO;
-    //滑动到指定位置（偏移量）（就是一划直接停到那个位置）
-    //        sv.contentOffset=CGPointMake(375*2, 0);\
-    //指定代理人
     sv.delegate=self;
     [self.view addSubview:sv];
     
+    PControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 140, 375, 10)];
+    PControl.numberOfPages=4;
+    PControl.currentPage = 1;
+    //选中点的颜色
+    PControl.currentPageIndicatorTintColor=[UIColor redColor];
+    //未选中点的颜色
+    PControl.pageIndicatorTintColor=[UIColor whiteColor];
+    [self.view addSubview:PControl];
     
-    
-    
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 375,550)];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 150, 375,400)];
     tableView.delegate = self;
     tableView.dataSource = self;
     [self.view addSubview:tableView];
-    tableView.tableHeaderView = sv;
-    
+    [self addTimer];
+}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    int number=(int)scrollView.contentOffset.x/375;
+    //设置小点 的位置
+    PControl.currentPage = number;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,19 +86,17 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"cellId";
-    
     NSInteger kindexPath = indexPath.row + 30;
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellId];
-    if(cell){
-    NSString *name = [NSString stringWithFormat:@"%ld",(long)kindexPath];
-    cell.imageView.image = [UIImage imageNamed:name];
-    ;
-    }
-
-    if(indexPath.row == 0){
     
-        
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if(!cell){
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellId];
+    }
+    NSString *name = [NSString stringWithFormat:@"%ld",(long)kindexPath];
+    if(cell){
+    cell.imageView.image = [UIImage imageNamed:name];
+    }
+    if(indexPath.row == 0){
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(200, 10, 150, 20)];
         label.text = @"假日";
         [cell addSubview:label];
@@ -148,6 +151,11 @@
         labelSeven.font = [UIFont systemFontOfSize:13];
         labelSeven.textColor = [UIColor colorWithRed:53.0/255 green:143.0/255 blue:203.0/255 alpha:1];
         [cell addSubview:labelSeven];
+        
+        UIButton *buttonKey = [UIButton buttonWithType:UIButtonTypeCustom];
+        buttonKey.frame = CGRectMake(10, 0, 150, 130);
+        [buttonKey addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:buttonKey];
     }else if(indexPath.row == 1){
         
         
@@ -333,7 +341,10 @@
     
     return cell;
 }
-
+- (void)enter{
+    VC_One_Button *vc = [[VC_One_Button alloc]init];
+    [self presentViewController:vc animated:YES completion:nil];
+     }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 4;
 }
@@ -346,17 +357,42 @@
 {
     return 130;
 }
-- (void)addLove:(NSString *)str{
-    str = @"103";
-}
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)addTimer
+{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
+    self.timer = timer;
+    // 消息循环
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSRunLoopCommonModes];
 }
-*/
 
+
+- (void)nextImage
+{
+    if (PControl.currentPage == PControl.numberOfPages - 1) {
+        PControl.currentPage = 0;
+    } else {
+        PControl.currentPage++;
+    }
+    
+    CGFloat offsetX = PControl.currentPage *375;
+    [UIView animateWithDuration:1.0 animations:^{
+        //        NSLog(@"%f--- %f",offsetX,_sv.contentSize.width);
+        [sv setContentOffset:CGPointMake(offsetX, 0) animated:YES];
+    }];
+    
+}
+
+// 开始拖拽的时候调用
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    // 停止定时器
+    [self.timer invalidate];
+}
+// 结束拖拽的时候调用
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self addTimer];
+}
 @end

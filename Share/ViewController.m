@@ -90,14 +90,17 @@ NSString *password;
     [self.view addSubview:buttonTwo];
     
     UIButton *buttonThree = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonThree.frame = CGRectMake(30, 480, 150, 20);
-    [buttonThree setTitle:@"自动登录" forState:UIControlStateNormal];
-    [buttonThree setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [buttonThree setTitle:@"自动登录" forState:UIControlStateSelected];
+    buttonThree.frame = CGRectMake(50, 480, 15, 15);
     [buttonThree setImage:[UIImage imageNamed:@"37DF92A77FD578648E6DA38A0EBC12F9"] forState:UIControlStateNormal];
     [buttonThree setImage:[UIImage imageNamed:@"A1A0C33290AE345816E10EAB8BCFAE64"] forState:UIControlStateSelected];
     [buttonThree addTarget:self action:@selector(touch:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:buttonThree];
+    
+    UILabel *labelOfButtonright = [[UILabel alloc]initWithFrame:CGRectMake(67, 475, 80, 25)];
+    labelOfButtonright.text = @"自动登录";
+    labelOfButtonright.textColor = [UIColor colorWithRed:12.0/255 green:98.0/255 blue:159.0/255 alpha:1];
+    [labelOfButtonright setFont:[UIFont systemFontOfSize:16]];
+    [self.view addSubview:labelOfButtonright];
 }
 
 - (void)touch:(UIButton *)sender{
@@ -113,7 +116,7 @@ NSString *password;
     [self presentViewController:vc animated:YES completion:nil];
 }
 - (void)enter{
-//       if ([textFiledOne.text isEqualToString:account]&&[textFiledTwo.text isEqualToString:password]) {
+       if ([textFiledOne.text isEqualToString:account]&&[textFiledTwo.text isEqualToString:password]) {
 
     UITabBarController *tb=[[UITabBarController alloc]init];
     
@@ -154,17 +157,17 @@ NSString *password;
     [UITabBar appearance].translucent = NO;//取消tabBar的透明效果
     
     [self presentViewController:tb animated:YES completion:nil];
-//    }else {
-//        UIImageView *error = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"error"]];
-//        error.frame = CGRectMake(30, 240, 315, 140);
-//        [self.view addSubview:error];
-//        [error setTag:15];
-//        UIButton *buttonYes = [UIButton buttonWithType:UIButtonTypeCustom];
-//        buttonYes.frame = CGRectMake(280, 350, 30, 15);
-//        buttonYes .backgroundColor = [UIColor clearColor];
-//        [buttonYes addTarget:self action:@selector(yes) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:buttonYes];
-//    }
+    }else {
+        UIImageView *error = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"error"]];
+        error.frame = CGRectMake(30, 240, 315, 140);
+        [self.view addSubview:error];
+        [error setTag:15];
+        UIButton *buttonYes = [UIButton buttonWithType:UIButtonTypeCustom];
+        buttonYes.frame = CGRectMake(280, 350, 30, 15);
+        buttonYes .backgroundColor = [UIColor clearColor];
+        [buttonYes addTarget:self action:@selector(yes) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:buttonYes];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

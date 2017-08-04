@@ -9,6 +9,8 @@
 #import "ViewControllerFive.h"
 #import "ViewControllerFive_One.h"
 #import "ViewControllerFive_Four.h"
+#import "Five_Zero.h"
+#import "VC_Five_Two.h"
 @interface ViewControllerFive ()<UITableViewDelegate,UITableViewDataSource>{
     UIButton *button;
 }
@@ -116,14 +118,17 @@
         button.frame = CGRectMake(320, 15, 15, 15);
         [button setImage:[UIImage imageNamed:@"touch"]forState:UIControlStateNormal];
         [cell addSubview:button];
-        if(indexPath.row == 1){
+        if(indexPath.row == 0){
+            [button addTarget:self action:@selector(enterZero) forControlEvents:UIControlEventTouchUpInside];
+        }else if(indexPath.row == 1){
             [button addTarget:self action:@selector(enterOne) forControlEvents:UIControlEventTouchUpInside];
-        }
-
-        if(indexPath.row == 4){
+        } else if(indexPath.row == 2){
+            [button addTarget:self action:@selector(enterTwo) forControlEvents:UIControlEventTouchUpInside];
+        }else if(indexPath.row == 3){
+            [button addTarget:self action:@selector(enterThree) forControlEvents:UIControlEventTouchUpInside];
+        }else if(indexPath.row == 4){
             [button addTarget:self action:@selector(enterFour) forControlEvents:UIControlEventTouchUpInside];
-        }
-        if(indexPath.row == 5){
+        }else if(indexPath.row == 5){
            [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -133,13 +138,40 @@
 - (void)back{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (void)enterOne{
-    ViewControllerFive_One *One = [[ViewControllerFive_One alloc]init];
-    [self presentViewController:One animated:YES completion:nil];
+- (void)enterZero{
+    Five_Zero *zero = [[Five_Zero alloc]init];
+    [self presentViewController:zero animated:YES completion:nil];
 }
+
+- (void)enterOne{
+    ViewControllerFive_One *one = [[ViewControllerFive_One alloc]init];
+    [self presentViewController:one animated:YES completion:nil];
+}
+- (void)enterTwo{
+    VC_Five_Two *two = [[VC_Five_Two alloc]init];
+    [self presentViewController:two animated:YES completion:nil];
+}
+- (void)enterThree{
+    UIButton *buttonNew = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonNew.frame = CGRectMake(88, 100, 200, 200);
+    [buttonNew setImage:[UIImage imageNamed:@"79EEFBFB605BE5E47CB56C6735C1FEAB"] forState:UIControlStateNormal];
+     [buttonNew setImage:[UIImage imageNamed:@"79EEFBFB605BE5E47CB56C6735C1FEAB"] forState:UIControlStateSelected];
+    buttonNew.tag = 14;
+    [buttonNew addTarget:self action:@selector(tapMe) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:buttonNew];
+   
+}
+
 - (void)enterFour{
     ViewControllerFive_Four *Four = [[ViewControllerFive_Four alloc]init];
     [self presentViewController:Four animated:YES completion:nil];
+}
+- (void)tapMe{
+    for (UIView *subviews in [self.view subviews]) {
+        if (subviews.tag==14) {
+            [subviews removeFromSuperview];
+        }
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0){

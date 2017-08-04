@@ -35,8 +35,9 @@ extern NSString *password;
     [self.view addSubview:imageView];
     [imageView addSubview:buttonOne];
     
-    tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, 375, 300)];
+    tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, 375, 214)];
     tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    tableView.scrollEnabled = NO;
     [self.view addSubview:tableView];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -52,8 +53,10 @@ extern NSString *password;
 }
 - (void)submit{
     password = textFieldKey.text;
-    [self dismissViewControllerAnimated:YES completion:nil];
+    ViewController *vc = [[ViewController alloc]init];
+    [self presentViewController:vc animated:YES completion:nil];
 }
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *cellId = @"cellId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
@@ -88,7 +91,6 @@ extern NSString *password;
     // Dispose of any resources that can be recreated.
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-
     return 50;
 }
 - (void)back{

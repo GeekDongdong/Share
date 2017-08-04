@@ -312,7 +312,6 @@
         labelSeven.font = [UIFont systemFontOfSize:13];
         labelSeven.textColor = [UIColor colorWithRed:53.0/255 green:143.0/255 blue:203.0/255 alpha:1];
         [cell addSubview:labelSeven];
-        
     }
     
     return cell;

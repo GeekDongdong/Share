@@ -30,6 +30,11 @@
     imageView.backgroundColor = [UIColor colorWithRed:53.0/255 green:143.0/255 blue:203.0/255 alpha:1];
     [self.view addSubview:imageView];
     [imageView addSubview:buttonOne];
+    
+    UILabel *labelNew = [[UILabel alloc]initWithFrame:CGRectMake(20, 80, 335, 400)];
+    labelNew.numberOfLines = 0;
+    labelNew.text = @"       ゲートで流れているように後退を開いて、前に遡る、無数のスローを奪い合うほとばしっから目の前にして、果てない暗暗の中に、もくもくとから流れる歳月の中で、さらに盛り上がるに襲ってくる。私はずっと覚えていて私は第1目夏冰時の情景。その日、寮に入ると、彼女が長い髪と腰の後ろ姿が見えて。黒いサラサラ盤からかんざしから半分の髪の毛を斜めにを横切って、かんざし根元が横たわる4輪の両方がペアの白蓮華、見えない素材が、透き通ってきれいで、とても質感。白スカート、体つきはやせ細っすらり、古典的な美。";
+    [self.view addSubview:labelNew];
 // Do any additional setup after loading the view.
 }
 

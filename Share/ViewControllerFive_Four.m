@@ -103,15 +103,39 @@
     [self presentViewController:Three animated:YES completion:nil];
 }
 - (void)enterFour{
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(150, 300, 100, 40)];
-    [imageView setImage:[UIImage imageNamed:@"214141"]];
-    [self.view addSubview:imageView];
+    
+    UIButton *buttonNew = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonNew.frame = CGRectMake(150, 300, 100, 40);
+    [buttonNew setImage:[UIImage imageNamed:@"214141"] forState:UIControlStateNormal];
+    [buttonNew setImage:[UIImage imageNamed:@"214141"] forState:UIControlStateSelected];
+    buttonNew.tag = 13;
+    [buttonNew addTarget:self action:@selector(tapMe) forControlEvents:UIControlEventTouchUpInside];
+    
+    //设置动画
+    CATransition * transion = [CATransition animation];
+    
+    
+    transion.type = @"push";//设置动画方式
+    transion.subtype = @"fromRight";//设置动画从那个方向开始
+    [buttonNew.layer addAnimation:transion forKey:nil];//给Label.layer 添加动画
+    //设置延时效果
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),dispatch_get_main_queue(),^{[buttonNew removeFromSuperview];
+    });//这句话的意思是1.5秒后，把label移出视图
+    
+    [self.view addSubview:buttonNew];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)tapMe{
+    for (UIView *subviews in [self.view subviews]) {
+        if (subviews.tag==13) {
+            [subviews removeFromSuperview];
+        }
+    }
+}
 /*
 #pragma mark - Navigation
 

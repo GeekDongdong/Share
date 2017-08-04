@@ -8,7 +8,9 @@
 
 #import "ViewControllerFive_One_Two.h"
 
-@interface ViewControllerFive_One_Two ()
+@interface ViewControllerFive_One_Two ()<UITableViewDelegate,UITableViewDataSource>{
+    UITableView *tableView;
+}
 
 @end
 
@@ -30,8 +32,53 @@
     imageView.backgroundColor = [UIColor colorWithRed:53.0/255 green:143.0/255 blue:203.0/255 alpha:1];
     [self.view addSubview:imageView];
     [imageView addSubview:buttonOne];
+    
+    tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, 375,550)];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     // Do any additional setup after loading the view.
 }
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellId = @"cellId";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if(!cell){
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellId];
+    }
+    NSArray *arrayNew = [NSArray arrayWithObjects:@"share小兰",@"share小雪",@"share小明",@"share萌萌",@"sharetLity",nil];
+    NSString *name;
+    name = [NSString stringWithFormat:@"sixin_img%ld",indexPath.row+2];
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:name]];
+    imageView.frame = CGRectMake(50, 10, 70, 70);
+    [cell addSubview:imageView];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(125, 40, 100, 10)];
+    label.text = [arrayNew objectAtIndex:indexPath.row];
+    [cell addSubview:label];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(275, 35, 65, 20);
+    [button setImage:[UIImage imageNamed:@"guanzhu_pressed"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"guanzhu_normal"] forState:UIControlStateSelected];
+    [button addTarget:self action:@selector(guanZhu:) forControlEvents:UIControlEventTouchUpInside];
+    [cell addSubview:button];
+    
+    return cell;
+}
+- (void)guanZhu:(UIButton *)sender{
+       sender.selected = !sender.selected;
+    }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 5;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 90;
+}
+
 - (void)back{
     [self dismissViewControllerAnimated:YES completion:nil];
 }

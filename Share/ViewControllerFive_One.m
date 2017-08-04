@@ -8,10 +8,8 @@
 
 #import "ViewControllerFive_One.h"
 #import"ViewControllerFive_One_Zero.h"
-#import "ViewControllerFive_One_One.h"
 #import "ViewControllerFive_One_Two.h"
 #import "ViewControllerFive_One_Three.h"
-#import "ViewControllerFive_One_Four.h"
 @interface ViewControllerFive_One ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *tableView;
     UIButton *button;
@@ -113,8 +111,41 @@
     [self presentViewController:Zero animated:YES completion:nil];
 }
 - (void)enterOne{
-    ViewControllerFive_One_One *One = [[ViewControllerFive_One_One alloc]init];
-    [self presentViewController:One animated:YES completion:nil];
+    //UIAlertcontroller
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Qusetion" message:@"Are you a handsome man ?" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+                UIButton *buttonYes = [UIButton buttonWithType:UIButtonTypeCustom];
+                buttonYes.frame = CGRectMake(0, 64, 375, 230);
+                buttonYes .backgroundColor = [UIColor clearColor];
+               [buttonYes setImage:[UIImage imageNamed:@"errorNew"] forState:UIControlStateNormal];
+                buttonYes.tag = 19;
+                [buttonYes addTarget:self action:@selector(yes) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:buttonYes];
+                [self addTimer];
+        
+    }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:yesAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+- (void)yes{
+    for (UIView *subviews in [self.view subviews]) {
+        if (subviews.tag == 12|| subviews.tag == 19) {
+            [subviews removeFromSuperview];
+        }
+    }
+}
+
+- (void)addTimer
+{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(yes) userInfo:nil repeats:NO];
+    self.timer = timer;
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSRunLoopCommonModes];
 }
 - (void)enterTwo{
     ViewControllerFive_One_Two *Two = [[ViewControllerFive_One_Two alloc]init];
@@ -125,10 +156,25 @@
     [self presentViewController:Three animated:YES completion:nil];
 }
 - (void)enterFour{
-    ViewControllerFive_One_Four *Three = [[ViewControllerFive_One_Four alloc]init];
-    [self presentViewController:Three animated:YES completion:nil];}
+    UIButton *buttonNew = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonNew.frame = CGRectMake(0, 64, 375, 210);
+    [buttonNew setImage:[UIImage imageNamed:@"124511760"] forState:UIControlStateNormal];
+    [buttonNew setImage:[UIImage imageNamed:@"124511760"] forState:UIControlStateSelected];
+    buttonNew.tag = 12;
+    [buttonNew addTarget:self action:@selector(tapMe) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:buttonNew];
+    
+}
+- (void)tapMe{
+    for (UIView *subviews in [self.view subviews]) {
+        if (subviews.tag==12) {
+            [subviews removeFromSuperview];
+        }
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 @end

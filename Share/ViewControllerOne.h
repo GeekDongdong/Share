@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewControllerOne : UIViewController
-
+@property(nonatomic,strong)NSTimer *timer;
 @end

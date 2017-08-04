@@ -98,9 +98,21 @@ extern NSString *password;
     // Dispose of any resources that can be recreated.
 }
 - (void)back{
-    account = textFiledTwo.text;
-    password = textFiledThree.text;
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if([textFiledTwo.text isEqualToString:@""] || [textFiledThree.text isEqualToString:@""]){
+        UIButton *error =[UIButton buttonWithType:UIButtonTypeCustom];
+        [error setImage:[UIImage imageNamed:@"2389748"] forState:UIControlStateNormal];
+        [error setImage:[UIImage imageNamed:@"2389748"] forState:UIControlStateSelected];
+        error.tag = 1;
+        error.frame = CGRectMake(30, 240, 315, 140);
+        [error addTarget:self action:@selector(yes) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:error];
+        [self addTimer];
+        }else{
+            account = textFiledTwo.text;
+            password = textFiledThree.text;
+            [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
 }
 -(void)returnText:(ReturnTextBlock)block{
     
@@ -113,11 +125,23 @@ extern NSString *password;
 -(void)viewWillDisappear:(BOOL)animated{
     
     if (self.returnTextBlock !=nil) {
-        
         self.returnTextBlock(textFiledTwo.text,textFiledThree.text);
-        
+    }
+}
+- (void)yes{
+    for (UIView *subviews in [self.view subviews]) {
+        if (subviews.tag==1) {
+            [subviews removeFromSuperview];
+        }
     }
     
+}
+- (void)addTimer
+{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(yes) userInfo:nil repeats:NO];
+    self.timer = timer;
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSRunLoopCommonModes];
 }
 /*
 #pragma mark - Navigation
